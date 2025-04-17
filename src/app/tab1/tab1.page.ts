@@ -10,7 +10,34 @@ import { LastFmService } from '../services/last-fm/last-fm.service';
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
 })
 export class Tab1Page {
-  private LastFmService = inject(LastFmService);
+  private lastFmService = inject(LastFmService);
 
-  constructor() {}
+  public songs: any | undefined = undefined; //assigning any/undefined to songs is valid
+
+  constructor() { }
+
+
+  ngOnInit() {
+    this.lastFmService.getTopArtists().subscribe({
+      next: (response: any) => {
+
+        if (response) {
+          this.songs = response;
+
+          // Debug logging for image data structure
+          console.log('Songs:');
+      console.log(this.songs);
+        } else {
+          console.error('No song data in the response');
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching event details:', err);
+      }
+    });
+
+
+
+
+  }
 }

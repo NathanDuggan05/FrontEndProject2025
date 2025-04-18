@@ -32,5 +32,16 @@ export class LastFmService {
 
   }
 
+  searchArtist(artistName: string): Observable<any> {
+    const infoUrl = `${API_URL}?method=artist.getinfo&artist=${encodeURIComponent(artistName)}&api_key=${API_KEY}&format=json`;
+    const topTracksUrl = `${API_URL}?method=artist.gettoptracks&artist=${encodeURIComponent(artistName)}&api_key=${API_KEY}&limit=5&format=json`;
+    const albumsUrl = `${API_URL}?method=artist.gettopalbums&artist=${encodeURIComponent(artistName)}&api_key=${API_KEY}&limit=3&format=json`;
+
+    return forkJoin({
+      info: this.httpClient.get<any>(infoUrl),
+      topTracks: this.httpClient.get<any>(topTracksUrl),
+      albums: this.httpClient.get<any>(albumsUrl)
+    });
+  }
 
 }

@@ -1,17 +1,71 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title>Artist Search</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="search-container">
+    <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      (ionInput)="handleSearch($event)"
+      placeholder="Search for an artist..."
+      [debounce]="500">
+    </ion-searchbar>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+    @if (isLoading) {
+      <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Searching...</p>
+      </div>
+    } @else if (error) {
+      <div class="error-container">
+        <p>{{ error }}</p>
+      </div>
+    } @else if (artistData) {
+      <ion-card>
+        <ion-card-header>
+          <div class="artist-header">
+            <ion-thumbnail>
+              <ion-img [src]="artistData.image[2]['#text']" [alt]="artistData.name"></ion-img>
+            </ion-thumbnail>
+            <ion-card-title>{{ artistData.name }}</ion-card-title>
+          </div>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="stats-container">
+            <ion-chip>
+              <ion-icon name="headset-outline"></ion-icon>
+              <ion-label>{{ (artistData.stats.listeners).toLocaleString() }} listeners</ion-label>
+            </ion-chip>
+            <ion-chip>
+              <ion-icon name="play-outline"></ion-icon>
+              <ion-label>{{ (artistData.stats.playcount).toLocaleString() }} plays</ion-label>
+            </ion-chip>
+          </div>
+
+          <div class="bio-section">
+            <p>{{ cleanBioText(artistData.bio.summary) }}</p>
+          </div>
+
+          @if (artistData.topTracks?.length > 0) {
+            <div class="top-tracks">
+              <h3>Top Tracks</h3>
+              <ion-list>
+                @for (track of artistData.topTracks; track $index) {
+                  <ion-item lines="none">
+                    <ion-label>
+                      <h4>{{ track.name }}</h4>
+                      <p>{{ (track.listeners).toLocaleString() }} listeners</p>
+                    </ion-label>
+                  </ion-item>
+                }
+              </ion-list>
+            </div>
+          }
+        </ion-card-content>
+      </ion-card>
+    }
+  </div>
 </ion-content>

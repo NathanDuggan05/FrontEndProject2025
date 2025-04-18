@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Global Top 50 Artists 
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -16,25 +16,58 @@
   <div>
     @if (artists.length > 0) {
       <ion-list>
-        <ion-item class="artist-item" *ngFor="let artist of artists">
-          <ion-thumbnail slot="start">
-            <ion-img [src]="artist.image[0]['#text']" alt="{{ artist.name }}"></ion-img>
-          </ion-thumbnail>
-          <ion-label>
-            <h2 class="ion-text-wrap artist-name">{{ artist.name }}</h2>
-            <p class="stats">
-              <ion-icon name="headset-outline"></ion-icon>
-              {{ (artist.listeners).toLocaleString() }} listeners
-            </p>
-            <p class="stats">
-              <ion-icon name="play-outline"></ion-icon>
-              {{ (artist.playcount).toLocaleString() }} plays
-            </p>
-          </ion-label>
-          <ion-button fill="clear" slot="end" [href]="artist.url" target="_blank">
-            <ion-icon name="open-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
+        <ion-item-group class="artist-item" *ngFor="let artist of artists">
+          <ion-item (click)="toggleBio(artist)">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="artist.image[0]['#text']" alt="{{ artist.name }}"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2 class="ion-text-wrap artist-name">{{ artist.name }}</h2>
+              <p class="stats">
+                <ion-icon name="headset-outline"></ion-icon>
+                {{ (artist.listeners).toLocaleString() }} listeners
+              </p>
+              <p class="stats">
+                <ion-icon name="play-outline"></ion-icon>
+                {{ (artist.playcount).toLocaleString() }} plays
+              </p>
+            </ion-label>
+            <ion-button fill="clear" slot="end" (click)="$event.stopPropagation()" [href]="artist.url" target="_blank">
+              <ion-icon name="open-outline"></ion-icon>
+            </ion-button>
+            <ion-icon slot="end" [name]="artist.showBio ? 'chevron-up' : 'chevron-down'"></ion-icon>
+          </ion-item>
+          
+          @if (artist.showBio) {
+            <ion-item lines="none" class="bio-section">
+              <ion-label class="ion-text-wrap">
+                <div class="bio-content">
+                  @if (artist.bio?.topAlbums?.length > 0) {
+                    <div class="top-albums">
+                      <h3>Top Albums</h3>
+                      <div class="album-grid">
+                        @for (album of artist.bio.topAlbums; track album.name) {
+                          <div class="album-card">
+                            <ion-img [src]="album.image[2]['#text']" alt="{{ album.name }}"></ion-img>
+                            <p class="album-name">{{ album.name }}</p>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  <p class="bio-text">{{ artist.bio?.summary || 'Biography loading...' }}</p>
+                  @if (artist.bio?.tags) {
+                    <div class="tags">
+                      <ion-chip *ngFor="let tag of artist.bio.tags.slice(0,3)">
+                        {{ tag }}
+                      </ion-chip>
+                    </div>
+                  }
+                </div>
+              </ion-label>
+            </ion-item>
+          }
+        </ion-item-group>
       </ion-list>
     } @else {
       <div class="ion-text-center">

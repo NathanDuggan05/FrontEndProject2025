@@ -6,6 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- content of page -->
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -15,13 +16,31 @@
   <div>
     @if (artists.length > 0) {
       <ion-list>
-        <ion-item class="artists-item" *ngFor="let artist of artists">
+        <ion-item class="artist-item" *ngFor="let artist of artists">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="artist.image[0]['#text']" alt="{{ artist.name }}"></ion-img>
+          </ion-thumbnail>
           <ion-label>
-            <h2>{{ artist.name }}</h2>
-            <p>Listeners: {{ artist.listeners }}</p>
+            <h2 class="ion-text-wrap artist-name">{{ artist.name }}</h2>
+            <p class="stats">
+              <ion-icon name="headset-outline"></ion-icon>
+              {{ (artist.listeners).toLocaleString() }} listeners
+            </p>
+            <p class="stats">
+              <ion-icon name="play-outline"></ion-icon>
+              {{ (artist.playcount).toLocaleString() }} plays
+            </p>
           </ion-label>
+          <ion-button fill="clear" slot="end" [href]="artist.url" target="_blank">
+            <ion-icon name="open-outline"></ion-icon>
+          </ion-button>
         </ion-item>
       </ion-list>
+    } @else {
+      <div class="ion-text-center">
+        <ion-spinner></ion-spinner>
+        <p>Loading artists...</p>
+      </div>
     }
   </div>
 </ion-content>

@@ -12,6 +12,16 @@
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div>
+    @if (artists.length > 0) {
+      <ion-list>
+        <ion-item class="artists-item" *ngFor="let artist of artists">
+          <ion-label>
+            <h2>{{ artist.name }}</h2>
+            <p>Listeners: {{ artist.listeners }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    }
+  </div>
 </ion-content>

@@ -1,75 +1,159 @@
-.search-container {
-  padding: 1rem;
-
-  ion-searchbar {
-    --border-radius: 10px;
-    margin-bottom: 1rem;
-  }
+.Tab2Title {
+    ion-toolbar {
+        ion-title {
+            text-align: center;
+            padding: 0;
+            font-weight: 600;
+        }
+    }
 }
 
-.loading-container, .error-container {
-  text-align: center;
-  padding: 2rem;
-  color: var(--ion-color-medium);
+
+
+.search-container {
+    padding: 1rem;
+
+    ion-searchbar {
+        --border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+}
+
+.loading-container,
+.error-container {
+    text-align: center;
+    padding: 2rem;
+    color: var(--ion-color-medium);
 }
 
 ion-card {
-  border-radius: 12px;
-  margin: 0;
+    border-radius: 12px;
+    margin: 0;
 
-  .artist-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    .artist-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
 
-    ion-thumbnail {
-      --size: 80px;
-      --border-radius: 8px;
+        ion-thumbnail {
+            --size: 80px;
+            --border-radius: 8px;
+        }
+
+        ion-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
     }
 
-    ion-card-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-  }
+    .stats-container {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
 
-  .stats-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-
-    ion-chip {
-      --background: var(--ion-color-light);
-    }
-  }
-
-  .bio-section {
-    margin: 1rem 0;
-    line-height: 1.6;
-    color: var(--ion-color-medium);
-  }
-
-  .top-tracks {
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-      color: var(--ion-color-dark);
+        ion-chip {
+            --background: var(--ion-color-light);
+        }
     }
 
-    ion-item {
-      --padding-start: 0;
-      
-      h4 {
-        font-weight: 500;
-        margin-bottom: 0.25rem;
-      }
-
-      p {
+    .bio-section {
+        margin: 1rem 0;
+        line-height: 1.6;
         color: var(--ion-color-medium);
-        font-size: 0.9rem;
-      }
+    }
+
+    .top-tracks {
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--ion-color-dark);
+        }
+
+        ion-item {
+            --padding-start: 0;
+
+            h4 {
+                font-weight: 500;
+                margin-bottom: 0.25rem;
+            }
+
+            p {
+                color: var(--ion-color-medium);
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      "artist artist"
+      "track album";
+  }
+}
+
+.search-section {
+  padding: 1.5rem;
+  border-radius: 12px;
+  
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+
+.artist-section {
+  grid-area: artist;
+  background: var(--ion-color-light);
+}
+
+.track-section {
+  grid-area: track;
+  background: var(--ion-color-primary-tint);
+}
+
+.album-section {
+  grid-area: album;
+  background: var(--ion-color-secondary-tint);
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  background: none;
+}
+
+.album-card {
+  margin: 0;
+  
+  img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  ion-card-header {
+    padding: 0.5rem;
+    
+    ion-card-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    ion-card-subtitle {
+      font-size: 0.8rem;
     }
   }
 }

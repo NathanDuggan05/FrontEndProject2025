@@ -44,4 +44,13 @@ export class LastFmService {
     });
   }
 
+  searchTrack(trackName: string): Observable<any> {
+    const url = `${API_URL}?method=track.search&track=${encodeURIComponent(trackName)}&api_key=${API_KEY}&format=json`;
+    return this.httpClient.get<any>(url);
+  }
+  searchAlbum(albumName: string): Observable<any> {
+    const url = `${API_URL}?method=album.search&album=${encodeURIComponent(albumName)}&api_key=${API_KEY}&format=json`;
+    return this.httpClient.get<any>(url);
+  }
+
 }

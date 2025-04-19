@@ -6,6 +6,7 @@ export interface Artist {
   url: string;
   streamable: string;
   image: Image[];
+  defaultImage?: string;
   bio?: {
     summary: string;
     tags: string[];
@@ -25,4 +26,9 @@ interface Album {
   playcount: number;
   url: string;
   image: Image[];
+  defaultTmage?: string;
 }
+
+export const DEFAULT_ARTIST_IMAGE = 'assets/images/default-artist.png';
+/* export const DEFAULT_ALBUM_IMAGE = 'assets/images/default_album.png';
+ */

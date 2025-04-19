@@ -29,6 +29,17 @@ export class Tab2Page {
   isLoading: boolean = false;
   error: string | null = null;
 
+  artistSearchTerm: string = '';
+  trackSearchTerm: string = '';
+  albumSearchTerm: string = '';
+  
+  trackData: any[] = [];
+  albumData: any[] = [];
+  
+  isArtistLoading: boolean = false;
+  isTrackLoading: boolean = false;
+  isAlbumLoading: boolean = false;
+
   constructor() {
     addIcons({
       playOutline,
@@ -36,7 +47,7 @@ export class Tab2Page {
     });
   }
 
-  async handleSearch(event: any) {
+  async handleArtistSearch(event: any) {
     const term = event.target.value.trim();
     if (term.length < 2) {
       this.artistData = null;
@@ -67,6 +78,46 @@ export class Tab2Page {
         this.error = 'Error searching for artist';
         this.isLoading = false;
         this.artistData = null;
+      }
+    });
+  }
+
+  async handleTrackSearch(event: any) {
+    const term = event.target.value.trim();
+    if (term.length < 2) {
+      this.trackData = [];
+      return;
+    }
+
+    this.isTrackLoading = true;
+    this.lastFmService.searchTrack(term).subscribe({
+      next: (data) => {
+        this.trackData = data.results?.trackmatches?.track || [];
+        this.isTrackLoading = false;
+      },
+      error: (err) => {
+        this.isTrackLoading = false;
+        this.trackData = [];
+      }
+    });
+  }
+
+  async handleAlbumSearch(event: any) {
+    const term = event.target.value.trim();
+    if (term.length < 2) {
+      this.albumData = [];
+      return;
+    }
+
+    this.isAlbumLoading = true;
+    this.lastFmService.searchAlbum(term).subscribe({
+      next: (data) => {
+        this.albumData = data.results?.albummatches?.album || [];
+        this.isAlbumLoading = false;
+      },
+      error: (err) => {
+        this.isAlbumLoading = false;
+        this.albumData = [];
       }
     });
   }

@@ -15,7 +15,7 @@ import {
   IonChip,
   IonItemGroup
 } from '@ionic/angular/standalone';
-import { NgFor, NgIf, CommonModule } from '@angular/common';
+import { NgFor, CommonModule } from '@angular/common';
 import { LastFmService } from '../services/last-fm/last-fm.service';
 import { addIcons } from 'ionicons';
 import {
@@ -32,7 +32,7 @@ import { Artist } from '../interfaces/artists';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonThumbnail, IonImg, IonIcon, IonButton,IonSpinner, IonChip, IonItemGroup, NgFor, NgIf ]
+  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonThumbnail, IonImg, IonIcon, IonButton,IonSpinner, IonChip, IonItemGroup, NgFor ]
 })
 export class Tab1Page {
   private lastFmService = inject(LastFmService);

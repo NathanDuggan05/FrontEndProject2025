@@ -211,3 +211,12 @@ ion-card {
     margin: 1rem 0;
   }
 }
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}

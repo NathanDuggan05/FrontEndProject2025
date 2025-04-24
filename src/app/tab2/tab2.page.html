@@ -4,170 +4,176 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="search-grid">
-    <div class="search-sections">
-      <!-- Artist Search Section -->
-      <div class="search-section artist-section">
-        <h2>Search Artists</h2>
-        <ion-searchbar 
-          [(ngModel)]="artistSearchTerm"
-          (ionInput)="handleArtistSearch($event)"
-          (keyup.enter)="handleArtistSearch($event)"
-          (ionClear)="handleClear('artist')"
-          placeholder="Search for an artist..."
-          [debounce]="400">
-        </ion-searchbar>
-        
-        @if (isArtistLoading) {
-          <div class="loading-container">
-            <ion-spinner></ion-spinner>
-            <p>Searching...</p>
-          </div>
-        } @else if (error) {
-          <div class="error-container">
-            <p>{{ error }}</p>
-          </div>
-        } @else if (artistData) {
-          <ion-card>
-            <ion-card-header>
-              <div class="artist-header">
-                <ion-thumbnail>
-                  <ion-img [src]="artistData.image[2]['#text']" [alt]="artistData.name"></ion-img>
-                </ion-thumbnail>
-                <ion-card-title>{{ artistData.name }}</ion-card-title>
-              </div>
-            </ion-card-header>
-
-            <ion-card-content>
-              <div class="stats-container">
-                <ion-chip>
-                  <ion-icon name="headset-outline"></ion-icon>
-                  <ion-label>{{ (artistData.stats.listeners).toLocaleString() }} listeners</ion-label>
-                </ion-chip>
-                <ion-chip>
-                  <ion-icon name="play-outline"></ion-icon>
-                  <ion-label>{{ (artistData.stats.playcount).toLocaleString() }} plays</ion-label>
-                </ion-chip>
-              </div>
-
-              <div class="bio-section">
-                <p>{{ cleanBioText(artistData.bio.summary) }}</p>
-              </div>
-
-              @if (artistData.topTracks?.length > 0) {
-                <div class="top-tracks">
-                  <h3>Top Tracks</h3>
-                  <ion-list>
-                    @for (track of artistData.topTracks; track $index) {
-                      <ion-item lines="none">
-                        <ion-label>
-                          <h4>{{ track.name }}</h4>
-                          <p>{{ (track.listeners).toLocaleString() }} listeners</p>
-                        </ion-label>
-                      </ion-item>
-                    }
-                  </ion-list>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="content-container">
+    <div class="search-grid">
+      <div class="search-sections">
+        <!-- Artist Search Section -->
+        <div class="search-section artist-section">
+          <h2>Search Artists</h2>
+          <ion-searchbar 
+            [(ngModel)]="artistSearchTerm"
+            (ionInput)="handleArtistSearch($event)"
+            (keyup.enter)="handleArtistSearch($event)"
+            (ionClear)="handleClear('artist')"
+            placeholder="Search for an artist..."
+            [debounce]="400">
+          </ion-searchbar>
+          
+          @if (isArtistLoading) {
+            <div class="loading-container">
+              <ion-spinner></ion-spinner>
+              <p>Searching...</p>
+            </div>
+          } @else if (error) {
+            <div class="error-container">
+              <p>{{ error }}</p>
+            </div>
+          } @else if (artistData) {
+            <ion-card>
+              <ion-card-header>
+                <div class="artist-header">
+                  <ion-thumbnail>
+                    <ion-img [src]="artistData.image[2]['#text']" [alt]="artistData.name"></ion-img>
+                  </ion-thumbnail>
+                  <ion-card-title>{{ artistData.name }}</ion-card-title>
                 </div>
-              }
-            </ion-card-content>
-          </ion-card>
-        }
-      </div>
+              </ion-card-header>
 
-      <!-- Track Search Section -->
-      <div class="search-section track-section">
-        <h2>Search Tracks</h2>
-        <ion-searchbar 
-          [(ngModel)]="trackSearchTerm"
-          (ionInput)="handleTrackSearch($event)"
-          placeholder="Search for a track..."
-          [debounce]="400">
-        </ion-searchbar>
+              <ion-card-content>
+                <div class="stats-container">
+                  <ion-chip>
+                    <ion-icon name="headset-outline"></ion-icon>
+                    <ion-label>{{ (artistData.stats.listeners).toLocaleString() }} listeners</ion-label>
+                  </ion-chip>
+                  <ion-chip>
+                    <ion-icon name="play-outline"></ion-icon>
+                    <ion-label>{{ (artistData.stats.playcount).toLocaleString() }} plays</ion-label>
+                  </ion-chip>
+                </div>
 
-        @if (isTrackLoading) {
-          <div class="loading-container">
-            <ion-spinner></ion-spinner>
-            <p>Searching tracks...</p>
-          </div>
-        } @else if (trackData.length > 0) {
-          <ion-list>
-            @for (track of trackData; track $index) {
-              <ion-item>
-                <ion-thumbnail slot="start">
-                  <ion-img [src]="track.image[1]['#text'] || 'assets/images/default-album.png'" [alt]="track.name"></ion-img>
-                </ion-thumbnail>
-                <ion-label>
-                  <h2>{{ track.name }}</h2>
-                  <p>{{ track.artist }}</p>
-                  <p>{{ (track.listeners).toLocaleString() }} listeners</p>
-                </ion-label>
-              </ion-item>
-            }
-          </ion-list>
-        }
-      </div>
+                <div class="bio-section">
+                  <p>{{ cleanBioText(artistData.bio.summary) }}</p>
+                </div>
 
-      <!-- Album Search Section -->
-      <div class="search-section album-section">
-        <h2>Search Albums</h2>
-        <ion-searchbar 
-          [(ngModel)]="albumSearchTerm"
-          (ionInput)="handleAlbumSearch($event)"
-          placeholder="Search for an album..."
-          [debounce]="400">
-        </ion-searchbar>
-
-        @if (isAlbumLoading) {
-          <div class="loading-container">
-            <ion-spinner></ion-spinner>
-            <p>Searching albums...</p>
-          </div>
-        } @else if (albumData.length > 0) {
-          <ion-list class="album-grid">
-            @for (album of albumData; track $index) {
-              <ion-card class="album-card">
-                <img [src]="album.image[2]['#text'] || 'assets/images/default-album.png'" [alt]="album.name">
-                <ion-card-header>
-                  <ion-card-title>{{ album.name }}</ion-card-title>
-                  <ion-card-subtitle>{{ album.artist }}</ion-card-subtitle>
-                </ion-card-header>
-              </ion-card>
-            }
-          </ion-list>
-        }
-      </div>
-    </div>
-
-    <!-- Recent Searches Section -->
-    <div class="search-history-container">
-      <div class="search-history-section">
-        <div class="history-header">
-          <h2>Recent Searches</h2>
-          @if (searchHistory.length > 0) {
-            <ion-button fill="clear" size="small" (click)="clearSearchHistory()">
-              Clear History
-            </ion-button>
+                @if (artistData.topTracks?.length > 0) {
+                  <div class="top-tracks">
+                    <h3>Top Tracks</h3>
+                    <ion-list>
+                      @for (track of artistData.topTracks; track $index) {
+                        <ion-item lines="none">
+                          <ion-label>
+                            <h4>{{ track.name }}</h4>
+                            <p>{{ (track.listeners).toLocaleString() }} listeners</p>
+                          </ion-label>
+                        </ion-item>
+                      }
+                    </ion-list>
+                  </div>
+                }
+              </ion-card-content>
+            </ion-card>
           }
         </div>
-        
-        @if (searchHistory.length > 0) {
-          <ion-list>
-            @for (search of searchHistory; track search.timestamp) {
-              <ion-item>
-                <ion-label>
-                  <h3>{{ search.term }}</h3>
-                  <p>
-                    <ion-badge color="medium">{{ search.type }}</ion-badge>
-                    {{ search.timestamp | date:'short' }}
-                  </p>
-                </ion-label>
-              </ion-item>
+
+        <!-- Track Search Section -->
+        <div class="search-section track-section">
+          <h2>Search Tracks</h2>
+          <ion-searchbar 
+            [(ngModel)]="trackSearchTerm"
+            (ionInput)="handleTrackSearch($event)"
+            (keyup.enter)="handleTrackSearch($event)"
+            (ionClear)="handleClear('track')"
+            placeholder="Search for a track..."
+            [debounce]="400">
+          </ion-searchbar>
+
+          @if (isTrackLoading) {
+            <div class="loading-container">
+              <ion-spinner></ion-spinner>
+              <p>Searching tracks...</p>
+            </div>
+          } @else if (trackData.length > 0) {
+            <ion-list>
+              @for (track of trackData; track $index) {
+                <ion-item>
+                  <ion-thumbnail slot="start">
+                    <ion-img [src]="track.image[1]['#text'] || 'assets/images/default-album.png'" [alt]="track.name"></ion-img>
+                  </ion-thumbnail>
+                  <ion-label>
+                    <h2>{{ track.name }}</h2>
+                    <p>{{ track.artist }}</p>
+                    <p>{{ (track.listeners).toLocaleString() }} listeners</p>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          }
+        </div>
+
+        <!-- Album Search Section -->
+        <div class="search-section album-section">
+          <h2>Search Albums</h2>
+          <ion-searchbar 
+            [(ngModel)]="albumSearchTerm"
+            (ionInput)="handleAlbumSearch($event)"
+            (keyup.enter)="handleAlbumSearch($event)"
+            (ionClear)="handleClear('album')"
+            placeholder="Search for an album..."
+            [debounce]="400">
+          </ion-searchbar>
+
+          @if (isAlbumLoading) {
+            <div class="loading-container">
+              <ion-spinner></ion-spinner>
+              <p>Searching albums...</p>
+            </div>
+          } @else if (albumData.length > 0) {
+            <ion-list class="album-grid">
+              @for (album of albumData; track $index) {
+                <ion-card class="album-card">
+                  <img [src]="album.image[2]['#text'] || 'assets/images/default-album.png'" [alt]="album.name">
+                  <ion-card-header>
+                    <ion-card-title>{{ album.name }}</ion-card-title>
+                    <ion-card-subtitle>{{ album.artist }}</ion-card-subtitle>
+                  </ion-card-header>
+                </ion-card>
+              }
+            </ion-list>
+          }
+        </div>
+      </div>
+
+      <!-- Recent Searches Section -->
+      <div class="search-history-container">
+        <div class="search-history-section">
+          <div class="history-header">
+            <h2>Recent Searches</h2>
+            @if (searchHistory.length > 0) {
+              <ion-button fill="clear" size="small" (click)="clearSearchHistory()">
+                Clear History
+              </ion-button>
             }
-          </ion-list>
-        } @else {
-          <p class="no-history">No recent searches</p>
-        }
+          </div>
+          
+          @if (searchHistory.length > 0) {
+            <ion-list>
+              @for (search of searchHistory; track search.timestamp) {
+                <ion-item>
+                  <ion-label>
+                    <h3>{{ search.term }}</h3>
+                    <p>
+                      <ion-badge color="medium">{{ search.type }}</ion-badge>
+                      {{ search.timestamp | date:'short' }}
+                    </p>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          } @else {
+            <p class="no-history">No recent searches</p>
+          }
+        </div>
       </div>
     </div>
   </div>

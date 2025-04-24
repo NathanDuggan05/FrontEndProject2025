@@ -1,0 +1,54 @@
+.content-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.loading-container,
+.error-container,
+.no-events-container {
+  text-align: center;
+  padding: 2rem;
+  
+  p {
+    color: var(--ion-color-medium);
+    margin-bottom: 1rem;
+  }
+}
+
+.event-card {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  
+  ion-card-header {
+    padding-bottom: 0.5rem;
+  }
+
+  ion-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-date {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-description {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .ticket-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    
+    ion-chip {
+      align-self: flex-start;
+    }
+  }
+}

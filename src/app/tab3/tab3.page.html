@@ -6,12 +6,56 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="content-container">
+    @if (isLoading) {
+      <div class="loading-container">
+        <ion-spinner></ion-spinner>
+        <p>Finding events near you...</p>
+      </div>
+    } @else if (error) {
+      <div class="error-container">
+        <p>{{ error }}</p>
+        <ion-button (click)="getCurrentLocation()">
+          Retry
+        </ion-button>
+      </div>
+    } @else if (events.length > 0) {
+      <ion-list>
+        @for (event of events; track event.id) {
+          <ion-card class="event-card">
+            <ion-card-header>
+              <ion-card-title>{{ event.title }}</ion-card-title>
+              <ion-chip>
+                <ion-label>{{ event.venue.name }}</ion-label>
+              </ion-chip>
+            </ion-card-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+            <ion-card-content>
+              <p class="event-date">{{ event.startDate | date:'medium' }}</p>
+              <p class="event-description">{{ event.description }}</p>
+              
+              @if (event.tickets) {
+                <div class="ticket-section">
+                  <ion-chip color="success">
+                    <ion-label>From {{ event.tickets.price | currency }}</ion-label>
+                  </ion-chip>
+                  <ion-button expand="block" (click)="openTicketLink(event.tickets.url)">
+                    Get Tickets
+                  </ion-button>
+                </div>
+              }
+            </ion-card-content>
+          </ion-card>
+        }
+      </ion-list>
+    } @else {
+      <div class="no-events-container">
+        <p>No events found nearby.</p>
+        <ion-button (click)="getCurrentLocation()">
+          Refresh
+        </ion-button>
+      </div>
+    }
+  </div>
 </ion-content>

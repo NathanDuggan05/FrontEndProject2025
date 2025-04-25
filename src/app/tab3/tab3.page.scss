@@ -21,50 +21,50 @@ loading-container,
   }
 }
 
+// Enhanced event card animations
 .event-card {
   margin-bottom: 1rem;
   border-radius: 12px;
+  transition: all 0.3s ease;
   
-  ion-card-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  ion-card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  ion-card-content {
-    .event-date {
-      color: var(--ion-color-medium);
-      margin-bottom: 0.5rem;
-    }
-  }
-
-  .event-description {
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  .ticket-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     
-    ion-chip {
-      align-self: flex-start;
+    ion-card-title {
+      color: var(--ion-color-primary);
+    }
+    
+    .event-date {
+      color: var(--ion-color-primary-shade);
     }
   }
 
   ion-chip {
-    margin: 0;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-light);
+    }
+  }
+
+  ion-button {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      --box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
   }
 }
 
+// Enhanced search container animations
 .search-container {
   display: flex;
   align-items: center;
@@ -73,6 +73,12 @@ loading-container,
   background: var(--ion-color-primary);
   border-radius: 12px;
   padding: 0.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
 
   ion-searchbar {
     flex: 1;
@@ -82,40 +88,14 @@ loading-container,
     --placeholder-color: rgba(255, 255, 255, 0.8);
     --icon-color: white;
     --clear-button-color: white;
-  }
-
-  ion-button {
-    margin: 0;
-    --color: white;
+    transition: transform 0.2s ease;
     
-    &::part(native) {
-      padding: 0.5rem;
-    }
-
-    ion-icon {
-      font-size: 1.2rem;
+    &:focus-within {
+      transform: scale(1.02);
     }
   }
 
-  ion-button.toggle-button {
-    margin: 0;
-    --background: rgba(0, 0, 0, 0.2);
-    --color: white;
-    --border-radius: 8px;
-    --padding-start: 1rem;
-    --padding-end: 1rem;
-    
-    &::part(native) {
-      padding: 0.5rem;
-    }
-
-    ion-icon {
-      margin-left: 0.5rem;
-      font-size: 1.2rem;
-    }
-  }
-
-  ion-button.toggle-button {
+  .toggle-button {
     margin: 0;
     min-width: 120px;
     height: 48px; // Match searchbar height

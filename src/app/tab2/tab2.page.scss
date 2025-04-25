@@ -1,3 +1,13 @@
+ion-header {
+  ion-toolbar {
+    ion-title {
+      text-align: center;
+      padding: 0;
+      font-weight: 600;
+    }
+  }
+}
+
 .Tab2Title {
     ion-toolbar {
         ion-title {
@@ -26,6 +36,17 @@
     color: var(--ion-color-medium);
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  
+    ion-spinner {
+        margin-bottom: 1rem;
+    }
+}
+
 ion-card {
     border-radius: 12px;
     margin: 0;
@@ -51,10 +72,6 @@ ion-card {
         display: flex;
         gap: 0.5rem;
         margin-bottom: 1rem;
-
-        ion-chip {
-            --background: var(--ion-color-light);
-        }
     }
 
     .bio-section {
@@ -88,61 +105,126 @@ ion-card {
 }
 
 .search-grid {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 
+// Modify the search sections layout
 .search-sections {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr;
+  margin-bottom: 2rem;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
+// Modify the search section styles
 .search-section {
   background: var(--ion-color-light);
   border-radius: 12px;
   padding: 1rem;
-  height: fit-content;
-  max-height: 500px;
+  height: auto;
+  max-height: 500px; // Limit the height
   overflow-y: auto;
+  margin-bottom: 1rem;
+  
+  ion-list {
+    max-height: 350px; // Limit list height
+    overflow-y: auto;
+    padding: 0;  // Remove default padding
+    background: transparent;
+    
+    // Style for track items
+    ion-item {
+      --padding-start: 1rem;
+      --padding-end: 1rem;
+      --padding-top: 0.5rem;
+      --padding-bottom: 0.5rem;
+      --background: rgba(255, 255, 255, 0.08); // Lighter, more consistent background
+      --border-color: rgba(255, 255, 255, 0.08);
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
 
-  h2 {
-    margin: 0 0 1rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    background: inherit;
-    padding: 0.5rem 0;
-    z-index: 1;
+      &:last-child {
+        margin-bottom: 1rem;  // Match searchbar's bottom margin
+      }
+
+      ion-thumbnail {
+        --size: 50px;
+        margin-right: 1rem;
+        
+        img {
+          border-radius: 4px;
+        }
+      }
+
+      ion-label {
+        h2 {
+          font-weight: 500;
+          color: white;
+          margin-bottom: 4px;
+        }
+
+        p {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.9rem;
+          margin: 2px 0;
+        }
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ion-color-medium);
+    border-radius: 4px;
+  }
+
+  ion-searchbar {
+    margin-bottom: 1rem;
+    --border-radius: 8px;
+    --height: 48px;
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.8);
+    --icon-color: white;
+    --cancel-button-color: white;
+    --clear-button-color: white;
   }
 }
 
 .artist-section {
-  background: var(--ion-color-light);
+  background: var(--ion-color-primary);
 }
 
 .track-section {
-  background: var(--ion-color-primary-tint);
+  background: var(--ion-color-secondary);
 }
 
 .album-section {
-  background: var(--ion-color-secondary-tint);
+  background: var(--ion-color-tertiary);
 }
 
+// Update album grid layout
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
   padding: 0;
   background: none;
+  max-height: 350px;
+  overflow-y: auto;
 }
 
 .album-card {
@@ -213,10 +295,104 @@ ion-card {
 }
 
 .content-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+.search-history {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--ion-color-light-shade);
+    
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  ion-list {
+    background: transparent;
+  }
+
+  ion-item {
+    --background: transparent;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      --background: var(--ion-color-light-shade);
+    }
+    
+    ion-badge {
+      text-transform: capitalize;
+    }
+  }
+}
+
+// Make search results more compact
+.search-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  ion-searchbar {
+    width: 100%;
+    --border-radius: 8px;
+    --height: 60px;
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.8);
+    --icon-color: white;
+    --cancel-button-color: white;
+    --clear-button-color: white;
+
+    // Artist search - Purple theme
+    &:nth-of-type(1) {
+      --background: var(--ion-color-primary);
+    }
+
+    // Track search - Deep blue theme
+    &:nth-of-type(2) {
+      --background: var(--ion-color-secondary);
+    }
+
+    // Album search - Teal theme
+    &:nth-of-type(3) {
+      --background: var(--ion-color-tertiary);
+    }
+    --min-height: 48px;
+    margin-bottom: 0;
+  }
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Update results container
+.results-container {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .search-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

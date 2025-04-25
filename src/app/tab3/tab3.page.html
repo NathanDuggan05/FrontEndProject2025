@@ -1,59 +1,92 @@
 <ion-header [translucent]="true" class="TabTitles">
   <ion-toolbar>
-    <ion-title>
-      Event Locator
-    </ion-title>
+    <ion-title>Event Locator</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Main container with max width and centered content -->
   <div class="content-container">
-    @if (isLoading) {
+    <!-- Search container with toggle -->
+    <div class="search-container">
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="searchEvents($event)"
+        [placeholder]="'Search for events by ' + searchType + '...'"
+        [debounce]="500">
+      </ion-searchbar>
+      
+      <ion-button
+        class="toggle-button"
+        [class.location-search]="searchType === 'location'"
+        (click)="toggleSearchType()">
+        Toggle Search
+        <ion-icon [name]="searchType === 'artist' ? 'person-outline' : 'location-outline'" slot="end"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Loading state -->
+    @if (isLoading || searching) {
       <div class="loading-container">
         <ion-spinner></ion-spinner>
-        <p>Finding events near you...</p>
+        <!-- Dynamic loading message based on action -->
+        <p>{{ searching ? 'Searching for events...' : 'Finding events near you...' }}</p>
       </div>
-    } @else if (error) {
+    } 
+    <!-- Error state -->
+    @else if (error) {
       <div class="error-container">
         <p>{{ error }}</p>
-        <ion-button (click)="getCurrentLocation()">
-          Retry
+        <ion-button (click)="retryLocation()">
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Try Location Search Again
         </ion-button>
       </div>
-    } @else if (events.length > 0) {
+    } 
+    <!-- Results state -->
+    @else if (events.length > 0) {
       <ion-list>
+        <!-- Track by ID for better performance -->
         @for (event of events; track event.id) {
           <ion-card class="event-card">
             <ion-card-header>
-              <ion-card-title>{{ event.title }}</ion-card-title>
-              <ion-chip>
-                <ion-label>{{ event.venue.name }}</ion-label>
-              </ion-chip>
+              <ion-card-title>{{ event.name }}</ion-card-title>
+              <!-- Only show venue if it exists -->
+              @if (event.venue && event.venue.name) {
+                <ion-chip>
+                  <ion-icon name="location-outline"></ion-icon>
+                  <ion-label>{{ event.venue.name }}</ion-label>
+                </ion-chip>
+              }
             </ion-card-header>
 
             <ion-card-content>
-              <p class="event-date">{{ event.startDate | date:'medium' }}</p>
-              <p class="event-description">{{ event.description }}</p>
-              
-              @if (event.tickets) {
-                <div class="ticket-section">
-                  <ion-chip color="success">
-                    <ion-label>From {{ event.tickets.price | currency }}</ion-label>
-                  </ion-chip>
-                  <ion-button expand="block" (click)="openTicketLink(event.tickets.url)">
-                    Get Tickets
-                  </ion-button>
-                </div>
+              @if (event.date) {
+                <p class="event-date">{{ event.date | date:'medium' }}</p>
+              }
+              @if (event.listeners) {
+                <ion-chip color="primary">
+                  <ion-icon name="people-outline"></ion-icon>
+                  <ion-label>{{ Number(event.listeners).toLocaleString() }} listeners</ion-label>
+                </ion-chip>
+              }
+              @if (event.url) {
+                <ion-button expand="block" href="{{ event.url }}" target="_blank">
+                  View Details
+                </ion-button>
               }
             </ion-card-content>
           </ion-card>
         }
       </ion-list>
-    } @else {
+    } 
+    <!-- Empty state -->
+    @else {
       <div class="no-events-container">
-        <p>No events found nearby.</p>
+        <p>No events found. Try searching for a specific city or artist.</p>
         <ion-button (click)="getCurrentLocation()">
-          Refresh
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Try Nearby Search
         </ion-button>
       </div>
     }
